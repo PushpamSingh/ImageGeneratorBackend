@@ -10,17 +10,14 @@ const generateTokens = async (userId) => {
         if (!user) {
             throw new ApiError(404, "user not found in generateToken")
         }
-        const accessToken = await User.generateAccesstoken();
-        const refreshToken = await User.generateRefreshtoken();
+        const accessToken = await user.generateAccesstoken();
+        const refreshToken = await user.generateRefreshtoken();
 
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false })
         return { accessToken, refreshToken }
     } catch (error) {
-        res.status(500)
-            .json(
-                new ApiError(500, error?.message)
-            )
+       throw error;
     }
 }
 
@@ -80,7 +77,7 @@ const Login = Asynhandler(async (req, res) => {
             throw new ApiError(404, "Incorrect email Id")
         }
 
-        const isPasswordmatch = await User.ComparePassword(password)
+        const isPasswordmatch = await isUser.ComparePassword(password)
         if (!isPasswordmatch) {
             throw new ApiError(400, "Invalid Credentials");
         }
@@ -109,6 +106,8 @@ const Login = Asynhandler(async (req, res) => {
             .json(
                 new ApiError(500, error?.message)
             )
+    //    console.log("Eror: ",error);
+
     }
 })
 
@@ -141,6 +140,7 @@ const Logout = Asynhandler(async (req, res) => {
             .json(
                 new ApiError(500, error?.message)
             )
+       
     }
 })
 

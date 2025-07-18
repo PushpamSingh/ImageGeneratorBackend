@@ -45,7 +45,7 @@ const generateImg = Asynhandler(async (req, res) => {
             userId,
             {
                 $set:{
-                    creditBalance:creditBalance-1
+                    creditBalance:user.creditBalance-1
                 }
             },
             {

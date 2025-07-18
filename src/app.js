@@ -20,3 +20,9 @@ app.use(cookieParser())
 app.get('/',(req,res)=>{
     res.status(200).send("hello, Welcome to the Imgify");
 })
+
+import AuthRouter from "./Routes/Auth.route.js";
+import ImageRouter from "./Routes/Image.route.js";
+
+app.use("/api/v1/auth",AuthRouter)
+app.use("/api/v1/img",ImageRouter)
