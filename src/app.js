@@ -7,7 +7,7 @@ export const app=express()
 dotenv.config()
 app.use(cors({
     origins: [process.env.CORS_ORIGIN1,process.env.CORS_ORIGIN2,process.env.CORS_ORIGIN3],
-    Credential:true,
+    credentials:true,
     optionsSuccessStatus: 200,
 }))
 app.set("trust proxy", 1) // trust first proxy
