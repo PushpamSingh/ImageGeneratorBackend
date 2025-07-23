@@ -9,7 +9,6 @@ app.use(cors({
     origins: [process.env.CORS_ORIGIN1,process.env.CORS_ORIGIN2,process.env.CORS_ORIGIN3],
     Credential:true,
     optionsSuccessStatus: 200,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 }))
 app.set("trust proxy", 1) // trust first proxy
 app.use(express.json({limit:"16kb"}))
