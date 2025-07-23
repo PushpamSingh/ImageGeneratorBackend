@@ -18,6 +18,10 @@ const transactionDataSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    payment:{
+        type:Boolean,
+        default:false
+    },
     date:{
         type:Number
     }

@@ -143,6 +143,55 @@ const paymentRazorpay=Asynhandler(async(req,res)=>{
     }
 })
 
+const veriFyRazorpay=Asynhandler(async(req,res)=>{
+    try {
+        const{razorpay_order_id}=req.body;
+        const orderifo=await razorpayInstance.orders.fetch(razorpay_order_id);
+        // console.log("OrderInfo: ",orderifo);
+        
+        if(orderifo.status==='paid'){
+            const transactionData =await TransactionData.findById(orderifo.receipt);
+
+            if(transactionData.payment){
+                throw new ApiError(409,"Payment failed")
+            }
+            const user=await User.findByIdAndUpdate(
+                transactionData.userId,
+                {
+                    $inc:{
+                        creditBalance:transactionData.credits
+                    }
+                },
+                {
+                    new:true
+                }
+            )
+            if(!user){
+                throw new ApiError(400,"Payment is not updated yet")
+            }
+
+            transactionData.payment=true
+            await transactionData.save({validateBeforeSave:false})
+
+            return res.status(200)
+            .json(
+                new ApiResponse(200,transactionData,"Payment Success")
+            )
+        }
+        else{
+            return res.status(500)
+            .json(
+                new ApiError(500,"Payment Failed")
+            )
+        }
+    } catch (error) {
+         res.status(500)
+            .json(
+                new ApiError(500, error?.message)
+            )
+    }
+})
 
 
-export {generateImg,paymentRazorpay}
+
+export {generateImg,paymentRazorpay,veriFyRazorpay}
