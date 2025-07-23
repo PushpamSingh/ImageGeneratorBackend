@@ -6,7 +6,7 @@ import cors from 'cors'
 export const app=express()
 dotenv.config()
 app.use(cors({
-    origins: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origins: [process.env.CORS_ORIGIN1,process.env.CORS_ORIGIN2,process.env.CORS_ORIGIN3],
     Credential:true,
     optionsSuccessStatus: 200,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
